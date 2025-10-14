@@ -1,0 +1,20 @@
+ # IDEA служебные файлы
+ .idea/
+ *.iml
+ *.iws
+ *.ipr
+
+ # Maven - игнорируем скомпилированные файлы, но оставляем pom.xml
+ target/
+ pom.xml.versionsBackup
+
+ # Gradle
+ .gradle/
+ build/
+
+ # Системные файлы
+ .DS_Store
+ Thumbs.db
+
+ # Логи
+ *.log
