@@ -1,0 +1,36 @@
+name: Java CI with Docker
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: order_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: localSQL
+        ports: [5432:5432]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          cache: maven
+          distribution: ''
+
+      - name: Run Tests
+        run: mvn clean test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/order_db
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: localSQL
+
+      - name: Build Docker Image
+        run: docker build -t order-service .

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: Order-Service-Test
+  datasource:
+    url: jdbc:postgresql://localhost:5432/order_db
+    username: postgres
+    password: localSQL
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
