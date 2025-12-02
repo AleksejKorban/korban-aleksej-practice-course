@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      default-filters:
+        - RemoveRequestHeader=Cookie
+      routes:
+        - id: auth-service
+          uri: http://auth-service:8081
+          predicates:
+            - Path=/auth/**
+        - id: user-service
+          uri: http://user-service:8082
+          predicates:
+            - Path=/users/**
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+jwt:
+  secret: ${JWT_SECRET:local-dev-secret-change-me}
+  issuer: ${JWT_ISSUER:auth-service}
+  audience: ${JWT_AUDIENCE:user-service}
+
+  leeway: 60
+
+orchestrator:
+  auth:
+    base-url: http://auth-service:8081
+  user:
+    base-url: http://user-service:8082
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: INFO
